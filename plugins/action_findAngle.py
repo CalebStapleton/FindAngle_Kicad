@@ -44,7 +44,7 @@ def find_angle(userInput: int):
                     diff = abs(angles[i] - angles[j])
                     
                     # Target explicit 90° intersections allowing a tiny margin
-                    if userInput-3 <= diff <= userInput+3:
+                    if int(float(userInput))-3 <= diff <= int(float(userInput))+3:
                         # Use internal unit conversion helper for reliability
                         mm_x = pcbnew.ToMM(pt[0])
                         mm_y = pcbnew.ToMM(pt[1])

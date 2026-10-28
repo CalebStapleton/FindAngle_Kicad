@@ -1,6 +1,7 @@
 import os
 import pcbnew
-from .action_find90 import find_angle
+import wx
+from .action_findAngle import find_angle
 from .gui import gui
 
 class AngleDetectorPlugin(pcbnew.ActionPlugin):
@@ -19,11 +20,10 @@ class AngleDetectorPlugin(pcbnew.ActionPlugin):
 
     def Run(self):
 
-        parent_window = pcbnew.GetWindow() # fix this
-        dlg = gui(parent_window)
+        dlg = gui(None)
 
         if dlg.ShowModal() == wx.ID_OK:
-            userInput = dlg.get_user_input()
+            userInput = dlg.GetValue()
 
             find_angle(userInput)
 

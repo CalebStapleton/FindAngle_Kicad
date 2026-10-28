@@ -14,7 +14,7 @@ class gui(wx.Dialog):
         bSizer.Add(self.m_staticText, 0, wx.ALL, 12)
 
         # Data field for the trace angle
-        self.m_dataField = wx.TextCtrl(self, wx.ID_ANY, u"90.0°", wx.DefaultPosition, wx.DefaultSize, 0)
+        self.m_dataField = wx.TextCtrl(self, wx.ID_ANY, u"90.0", (self.m_staticText.GetPosition().x + 100, self.m_staticText.GetPosition().y), wx.DefaultSize, 0)
         bSizer.Add(self.m_dataField, 0, wx.ALL|wx.EXPAND, 12)
 
         self.m_buttonOK = wx.Button(self, wx.ID_OK, u"OK", wx.DefaultPosition, wx.DefaultSize, 0)
