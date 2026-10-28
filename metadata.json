@@ -1,9 +1,9 @@
 {
-    "$schema": "https://kicad.org",
+    "$schema": "https://go.kicad.org/pcm/schemas/v1",
     "name": "90-Degree Track Junction Detector",
     "description": "Quickly identify potentially problematic right-angle junctions between separate PCB traces.",
     "description_full": "An automated engineering utility that scans your layout to detect instances where separate electrical traces meet precisely at a 90-degree intersection.",
-    "identifier": "https://github.com/GalacticVR0/find_90",
+    "identifier": "com.github.galacticvr0.find-90",
     "type": "plugin",
     "author": {
         "name": "Caleb Stapleton",
@@ -11,7 +11,7 @@
             "web": "https://github.com/GalacticVR0"
         }
     },
-    "license": "open-source",
+    "license": "MIT",
     "resources": {
         "homepage": "https://github.com/GalacticVR0/find_90"
     },
@@ -19,7 +19,7 @@
         {
             "version": "1.0.0",
             "status": "development",
-            "kicad_version": "10.0"
+            "kicad_version": "10.0.0"
         }
     ]
 }
