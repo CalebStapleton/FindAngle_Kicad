@@ -1,6 +1,7 @@
 import os
 import pcbnew
-from .action_find90 import find_90
+from .action_find90 import find_angle
+from .gui import gui
 
 class AngleDetectorPlugin(pcbnew.ActionPlugin):
     def defaults(self):
@@ -17,8 +18,17 @@ class AngleDetectorPlugin(pcbnew.ActionPlugin):
         self.icon_file_name = os.path.join(plugin_dir, "resources", "icon.png")
 
     def Run(self):
-        # Executes your refactored geometric calculation function
-        find_90()
+
+        parent_window = pcbnew.GetWindow() # fix this
+        dlg = gui(parent_window)
+
+        if dlg.ShowModal() == wx.ID_OK:
+            userInput = dlg.get_user_input()
+
+            find_angle(userInput)
+
+        dlg.Destroy()
+
 
 # Register the plugin object natively within KiCad 10
 AngleDetectorPlugin().register()

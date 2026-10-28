@@ -2,18 +2,19 @@ import pcbnew
 import math
 import wx
 
-def find_90():
+def find_angle(userInput: int):
     board = pcbnew.GetBoard()
     clearUser1()
     points = {}
-    
-    print("Scanning layout tracks...")
+
     
     # Safely extract tracks using modern instance tracking
     # (Accounts for the internal API transition)
     all_tracks = [t for t in board.GetTracks() if isinstance(t, pcbnew.PCB_TRACK)]
     pad_positions = {(pad.GetPosition().x, pad.GetPosition().y) for pad in board.GetPads() if isinstance(pad, pcbnew.PAD)
     }
+
+
     
     for track in all_tracks:
         # Get start/end positions as native Vector objects or tuples
@@ -33,8 +34,7 @@ def find_90():
         # Map angles meeting at specific coordinates
         for pt in (start, end):
             points.setdefault(pt, []).append(angle)
-                
-    found = False
+
     for pt, angles in points.items():
         # A junction requires at least two distinct traces joining
         if len(angles) >= 2:
@@ -44,19 +44,14 @@ def find_90():
                     diff = abs(angles[i] - angles[j])
                     
                     # Target explicit 90° intersections allowing a tiny margin
-                    if 87.0 <= diff <= 93.0:
+                    if userInput-3 <= diff <= userInput+3:
                         # Use internal unit conversion helper for reliability
                         mm_x = pcbnew.ToMM(pt[0])
                         mm_y = pcbnew.ToMM(pt[1])
 
                         if pt not in pad_positions:
-                            print(f"90° Junction found at X: {mm_x:.3f} mm, Y: {mm_y:.3f} mm")
+                            print(f"{userInput}° Junction found at X: {mm_x:.3f} mm, Y: {mm_y:.3f} mm")
                             place_marker(pt)
-                            found = True
-                        
-    if not found:
-        print("No separate 90° track intersections detected.")
-        print("If you drew it as one continuous segment, try breaking it into two pieces to test!")
 
 
 def place_marker(pt):
