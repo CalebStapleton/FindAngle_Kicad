@@ -49,11 +49,23 @@ def find_90():
 
                         if pt not in pad_positions:
                             print(f"90° Junction found at X: {mm_x:.3f} mm, Y: {mm_y:.3f} mm")
+                            place_marker(pt)
                             found = True
                         
     if not found:
         print("No separate 90° track intersections detected.")
         print("If you drew it as one continuous segment, try breaking it into two pieces to test!")
+
+
+def place_marker(pt):
+    board = pcbnew.GetBoard()
+    marker = pcbnew.PCB_Shape(board)
+    marker.SetShape(pcbnew.SHAPE_T_CIRCLE)
+    marker.SetCenter(pcbnew.Vector2D(pt[0], pt[1]))
+    marker.SetRadius(10)  # Set the radius of the circle (in internal units)
+    marker.SetLayer(pcbnew.F_Fab)
+    board.Add(marker)
+    pcbnew.Refresh()
 
 # Run it
 #find_90()

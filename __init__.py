@@ -1,13 +1,13 @@
 import os
 import pcbnew
-from .find_90_v10 import find_90_v10
+from action_find90 import find_90
 
 class AngleDetectorPlugin(pcbnew.ActionPlugin):
     def defaults(self):
         # Human-readable button properties
         self.name = "90° Track Junction Detector"
         self.category = "Design Review"
-        self.description = "Scans PCB tracks to find risky 90-degree trace intersections."
+        self.description = "Scans PCB tracks to find 90 degree bends"
         
         # UI visibility settings
         self.show_on_toolbar = True 
@@ -18,7 +18,7 @@ class AngleDetectorPlugin(pcbnew.ActionPlugin):
 
     def Run(self):
         # Executes your refactored geometric calculation function
-        find_90_v10()
+        find_90()
 
 # Register the plugin object natively within KiCad 10
 AngleDetectorPlugin().register()
