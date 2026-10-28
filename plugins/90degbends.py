@@ -1,7 +1,7 @@
 import pcbnew
 import math
 
-def find_90_v10():
+def find_90():
     board = pcbnew.GetBoard()
     points = {}
     
@@ -10,6 +10,8 @@ def find_90_v10():
     # Safely extract tracks using modern instance tracking
     # (Accounts for the internal API transition)
     all_tracks = [t for t in board.GetTracks() if isinstance(t, pcbnew.PCB_TRACK)]
+    pad_positions = {(pad.GetX(), pad.GetY()) for pad in board.GetPads() if isinstance(pad, pcbnew.PAD)
+    }
     
     for track in all_tracks:
         # Get start/end positions as native Vector objects or tuples
@@ -45,16 +47,13 @@ def find_90_v10():
                         mm_x = pcbnew.ToMM(pt[0])
                         mm_y = pcbnew.ToMM(pt[1])
 
-                        all_pads = [p for p in board.GetPads() if isinstance(p, pcbnew.PCB_PAD)]
-
-                        for pad in all_pads:
-                            if (pad.GetX() != pt[0] and pad.GetY() != pt[1]):
-                                print(f"90° Junction found at X: {mm_x:.3f} mm, Y: {mm_y:.3f} mm")
-                                found = True
+                        if pt not in pad_positions:
+                            print(f"90° Junction found at X: {mm_x:.3f} mm, Y: {mm_y:.3f} mm")
+                            found = True
                         
     if not found:
         print("No separate 90° track intersections detected.")
         print("If you drew it as one continuous segment, try breaking it into two pieces to test!")
 
 # Run it
-#find_90_v10()
+#find_90()
