@@ -1,6 +1,6 @@
 import os
 import pcbnew
-from action_find90 import find_90
+from .action_find90 import find_90
 
 class AngleDetectorPlugin(pcbnew.ActionPlugin):
     def defaults(self):
@@ -10,7 +10,7 @@ class AngleDetectorPlugin(pcbnew.ActionPlugin):
         self.description = "Scans PCB tracks to find 90 degree bends"
         
         # UI visibility settings
-        self.show_on_toolbar = True 
+        self.show_toolbar_button = True 
         
         # Absolute path calculation to find the icon file relative to this script
         plugin_dir = os.path.dirname(os.path.dirname(__file__))

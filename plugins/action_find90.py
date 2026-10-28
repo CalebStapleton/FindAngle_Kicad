@@ -1,5 +1,6 @@
 import pcbnew
 import math
+import wx
 
 def find_90():
     board = pcbnew.GetBoard()
@@ -10,7 +11,7 @@ def find_90():
     # Safely extract tracks using modern instance tracking
     # (Accounts for the internal API transition)
     all_tracks = [t for t in board.GetTracks() if isinstance(t, pcbnew.PCB_TRACK)]
-    pad_positions = {(pad.GetX(), pad.GetY()) for pad in board.GetPads() if isinstance(pad, pcbnew.PAD)
+    pad_positions = {(pad.GetPosition().x, pad.GetPosition().y) for pad in board.GetPads() if isinstance(pad, pcbnew.PAD)
     }
     
     for track in all_tracks:
@@ -59,13 +60,10 @@ def find_90():
 
 def place_marker(pt):
     board = pcbnew.GetBoard()
-    marker = pcbnew.PCB_Shape(board)
+    marker = pcbnew.PCB_SHAPE(board)
     marker.SetShape(pcbnew.SHAPE_T_CIRCLE)
-    marker.SetCenter(pcbnew.Vector2D(pt[0], pt[1]))
-    marker.SetRadius(10)  # Set the radius of the circle (in internal units)
-    marker.SetLayer(pcbnew.F_Fab)
+    marker.SetCenter(pcbnew.VECTOR2I(int(pt[0]), int(pt[1])))
+    marker.SetRadius(pcbnew.FromMM(1))  # Set the radius of the circle (in internal units)
+    marker.SetLayer(pcbnew.User_1)
     board.Add(marker)
     pcbnew.Refresh()
-
-# Run it
-#find_90()
