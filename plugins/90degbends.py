@@ -44,9 +44,13 @@ def find_90_v10():
                         # Use internal unit conversion helper for reliability
                         mm_x = pcbnew.ToMM(pt[0])
                         mm_y = pcbnew.ToMM(pt[1])
-                        
-                        print(f"🎯 90° Junction found at X: {mm_x:.3f} mm, Y: {mm_y:.3f} mm")
-                        found = True
+
+                        all_pads = [p for p in board.GetPads() if isinstance(p, pcbnew.PCB_PAD)]
+
+                        for pad in all_pads:
+                            if (pad.GetX() != pt[0] and pad.GetY() != pt[1]):
+                                print(f"90° Junction found at X: {mm_x:.3f} mm, Y: {mm_y:.3f} mm")
+                                found = True
                         
     if not found:
         print("No separate 90° track intersections detected.")
