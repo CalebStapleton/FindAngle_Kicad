@@ -1,0 +1,30 @@
+{
+    "$schema": "https://kicad.org",
+    "name": "90-Degree Track Junction Detector",
+    "description": "Quickly identify potentially problematic right-angle junctions between separate PCB traces.",
+    "description_full": "An automated engineering utility that scans your layout to detect instances where separate electrical traces meet precisely at a 90-degree intersection.",
+    "identifier": "org.kicad.plugins.angledetector",
+    "type": "plugin",
+    "author": {
+        "name": "Your Name",
+        "contact": {
+            "web": "https://github.com"
+        }
+    },
+    "license": "GPL-3.0-or-later",
+    "resources": {
+        "homepage": "https://github.com"
+    },
+    "versions": [
+        {
+            "version": "1.0.0",
+            "status": "stable",
+            "kicad_version": "10.0",
+            "platforms": [
+                "windows",
+                "linux",
+                "macos"
+            ]
+        }
+    ]
+}
