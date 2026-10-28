@@ -4,6 +4,7 @@ import wx
 
 def find_90():
     board = pcbnew.GetBoard()
+    clearUser1()
     points = {}
     
     print("Scanning layout tracks...")
@@ -66,4 +67,11 @@ def place_marker(pt):
     marker.SetRadius(pcbnew.FromMM(1))  # Set the radius of the circle (in internal units)
     marker.SetLayer(pcbnew.User_1)
     board.Add(marker)
+    pcbnew.Refresh()
+
+def clearUser1():
+    board = pcbnew.GetBoard()
+    drawing_to_remove = [d for d in board.GetDrawings() if d.GetLayer() == pcbnew.User_1]
+    for d in drawing_to_remove:
+        board.Remove(d)
     pcbnew.Refresh()

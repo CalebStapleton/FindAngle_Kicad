@@ -1,8 +1,8 @@
 {
     "$schema": "https://go.kicad.org/pcm/schemas/v1",
     "name": "90-Degree Track Junction Detector",
-    "description": "Quickly identify potentially problematic right-angle junctions between separate PCB traces.",
-    "description_full": "An automated engineering utility that scans your layout to detect instances where separate electrical traces meet precisely at a 90-degree intersection.",
+    "description": "Find 90 degree bends in traces",
+    "description_full": "A plugin that scans your PCB for 90-degree bends in traces before marking them in the User1 Layer",
     "identifier": "com.github.galacticvr0.find-90",
     "type": "plugin",
     "author": {
