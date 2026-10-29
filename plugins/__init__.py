@@ -23,9 +23,11 @@ class AngleDetectorPlugin(pcbnew.ActionPlugin):
         dlg = gui(None)
 
         if dlg.ShowModal() == wx.ID_OK:
-            userInput = dlg.GetValue()
+            userInput = list(dlg.GetValue())
+            angle = userInput[0]
+            layer = userInput[1]
 
-            find_angle(userInput)
+            find_angle(angle, layer)
 
         dlg.Destroy()
 

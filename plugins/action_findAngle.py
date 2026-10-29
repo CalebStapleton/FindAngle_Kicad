@@ -2,9 +2,9 @@ import pcbnew
 import math
 import wx
 
-def find_angle(userInput: int):
+def find_angle(userInput: int, layer: str):
     board = pcbnew.GetBoard()
-    clearUser1()
+    clearUser1(layer)
     points = {}
 
     
@@ -51,22 +51,22 @@ def find_angle(userInput: int):
 
                         if pt not in pad_positions:
                             print(f"{userInput}° Junction found at X: {mm_x:.3f} mm, Y: {mm_y:.3f} mm")
-                            place_marker(pt)
+                            place_marker(pt, layer)
 
 
-def place_marker(pt):
+def place_marker(pt, layer: str):
     board = pcbnew.GetBoard()
     marker = pcbnew.PCB_SHAPE(board)
     marker.SetShape(pcbnew.SHAPE_T_CIRCLE)
     marker.SetCenter(pcbnew.VECTOR2I(int(pt[0]), int(pt[1])))
     marker.SetRadius(pcbnew.FromMM(1))  # Set the radius of the circle (in internal units)
-    marker.SetLayer(pcbnew.User_1)
+    marker.SetLayer(getattr(pcbnew, layer))
     board.Add(marker)
     pcbnew.Refresh()
 
-def clearUser1():
+def clearUser1(layer: str):
     board = pcbnew.GetBoard()
-    drawing_to_remove = [d for d in board.GetDrawings() if d.GetLayer() == pcbnew.User_1]
+    drawing_to_remove = [d for d in board.GetDrawings() if d.GetLayer() == getattr(pcbnew, layer)]
     for d in drawing_to_remove:
         board.Remove(d)
     pcbnew.Refresh()
