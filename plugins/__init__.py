@@ -26,8 +26,10 @@ class AngleDetectorPlugin(pcbnew.ActionPlugin):
             userInput = list(dlg.GetValue())
             angle = userInput[0]
             layer = userInput[1]
+            checkPads = userInput[2]
+            checkVias = userInput[3]
 
-            find_angle(angle, layer)
+            find_angle(angle, layer, checkPads, checkVias)
 
         dlg.Destroy()
 

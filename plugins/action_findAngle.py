@@ -2,7 +2,7 @@ import pcbnew
 import math
 import wx
 
-def find_angle(userInput: int, layer: str):
+def find_angle(userInput: int, layer: str, checkPads: bool, checkVias: bool):
     board = pcbnew.GetBoard()
     clearUser1(layer)
     points = {}
@@ -11,8 +11,6 @@ def find_angle(userInput: int, layer: str):
     # Safely extract tracks using modern instance tracking
     # (Accounts for the internal API transition)
     all_tracks = [t for t in board.GetTracks() if isinstance(t, pcbnew.PCB_TRACK)]
-    pad_positions = {(pad.GetPosition().x, pad.GetPosition().y) for pad in board.GetPads() if isinstance(pad, pcbnew.PAD)
-    }
 
 
     
@@ -49,8 +47,19 @@ def find_angle(userInput: int, layer: str):
                         mm_x = pcbnew.ToMM(pt[0])
                         mm_y = pcbnew.ToMM(pt[1])
 
-                        if pt not in pad_positions:
-                            print(f"{userInput}° Junction found at X: {mm_x:.3f} mm, Y: {mm_y:.3f} mm")
+                        test_pt = pcbnew.VECTOR2I(int(pt[0]), int(pt[1]))
+                        hit_pad = any(pad.HitTest(test_pt, 0) for pad in board.GetPads() if isinstance(pad, pcbnew.PAD))
+                        hit_via = any(via.HitTest(test_pt, 0) for via in board.GetTracks() if isinstance(via, pcbnew.PCB_VIA))
+                        
+                        # Filtering logic based on checkboxes
+                        is_valid = True
+                        
+                        if hit_pad and not checkPads:
+                            is_valid = False
+                        if hit_via and not checkVias:
+                            is_valid = False
+                            
+                        if is_valid:
                             place_marker(pt, layer)
 
 
