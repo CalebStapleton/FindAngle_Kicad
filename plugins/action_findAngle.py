@@ -1,15 +1,11 @@
 import pcbnew
 import math
-import wx
 
-def find_angle(userInput: int, layer: str, checkPads: bool, checkVias: bool):
+def find_angle(angleInput: int, layer: str, checkPads: bool, checkVias: bool):
     board = pcbnew.GetBoard()
     clearUser1(layer)
     points = {}
 
-    
-    # Safely extract tracks using modern instance tracking
-    # (Accounts for the internal API transition)
     all_tracks = [t for t in board.GetTracks() if isinstance(t, pcbnew.PCB_TRACK)]
 
 
@@ -28,6 +24,8 @@ def find_angle(userInput: int, layer: str, checkPads: bool, checkVias: bool):
         dx = end[0] - start[0]
         
         angle = round(math.degrees(math.atan2(dy, dx)) % 180, 1)
+
+        angleInputint = int(float(angleInput))
         
         # Map angles meeting at specific coordinates
         for pt in (start, end):
@@ -41,37 +39,37 @@ def find_angle(userInput: int, layer: str, checkPads: bool, checkVias: bool):
                 for j in range(i + 1, len(angles)):
                     diff = abs(angles[i] - angles[j])
                     
-                    # Target explicit 90° intersections allowing a tiny margin
-                    if int(float(userInput))-3 <= diff <= int(float(userInput))+3:
-                        # Use internal unit conversion helper for reliability
-                        mm_x = pcbnew.ToMM(pt[0])
-                        mm_y = pcbnew.ToMM(pt[1])
+                    # Add margins to the target intersections to allow for slight deviations in the actual angles
+                    if angleInputint - 3 <= diff <= angleInputint + 3:
 
-                        test_pt = pcbnew.VECTOR2I(int(pt[0]), int(pt[1]))
-                        hit_pad = any(pad.HitTest(test_pt, 0) for pad in board.GetPads() if isinstance(pad, pcbnew.PAD))
-                        hit_via = any(via.HitTest(test_pt, 0) for via in board.GetTracks() if isinstance(via, pcbnew.PCB_VIA))
-                        
-                        # Filtering logic based on checkboxes
-                        is_valid = True
-                        
-                        if hit_pad and not checkPads:
-                            is_valid = False
-                        if hit_via and not checkVias:
-                            is_valid = False
+                        test_pt = pcbnew.VECTOR2I(int(pt[0]), int(pt[1]))                            
                             
-                        if is_valid:
+                        valid = True
+                        if (not checkPads):
+                            hit_pad = any(pad.HitTest(test_pt, 0) for pad in board.GetPads() if isinstance(pad, pcbnew.PAD))
+                            if hit_pad:
+                                valid = False
+                        if (not checkVias):
+                            hit_via = any(via.HitTest(test_pt, 0) for via in board.GetTracks() if isinstance(via, pcbnew.PCB_VIA))
+                            if hit_via:
+                                valid = False
+                            
+                        if valid:
                             place_marker(pt, layer)
-
+    
+    pcbnew.Refresh()
+### find_angle
+                            
+                            
 
 def place_marker(pt, layer: str):
     board = pcbnew.GetBoard()
     marker = pcbnew.PCB_SHAPE(board)
     marker.SetShape(pcbnew.SHAPE_T_CIRCLE)
     marker.SetCenter(pcbnew.VECTOR2I(int(pt[0]), int(pt[1])))
-    marker.SetRadius(pcbnew.FromMM(1))  # Set the radius of the circle (in internal units)
+    marker.SetRadius(pcbnew.FromMM(1))
     marker.SetLayer(getattr(pcbnew, layer))
     board.Add(marker)
-    pcbnew.Refresh()
 
 def clearUser1(layer: str):
     board = pcbnew.GetBoard()
