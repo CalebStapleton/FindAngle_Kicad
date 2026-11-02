@@ -17,8 +17,8 @@ class gui(wx.Dialog):
         bSizer.Add(self.m_staticText, 0, wx.ALL, 12)
 
         # Data field for the trace angle
-        self.m_dataField = wx.TextCtrl(self, wx.ID_ANY, u"90.0", wx.DefaultPosition, wx.DefaultSize, 0)
-        bSizer.Add(self.m_dataField, 0, wx.ALL|wx.EXPAND, 12)
+        self.angle = wx.TextCtrl(self, wx.ID_ANY, u"90.0", wx.DefaultPosition, wx.DefaultSize, 0)
+        bSizer.Add(self.angle, 0, wx.ALL|wx.EXPAND, 12)
 
 
         # Checkboxes for checking for trace angles on pads and vias
@@ -30,9 +30,11 @@ class gui(wx.Dialog):
         self.m_checkPads.SetValue(False)
         checkbox_sizer.Add(self.m_checkPads, 0, wx.ALL, 5)
 
-        self.m_checkVias = wx.CheckBox(self, wx.ID_ANY, u"Check Vias", wx.DefaultPosition, wx.DefaultSize, 0)
-        self.m_checkVias.SetValue(False)
-        checkbox_sizer.Add(self.m_checkVias, 0, wx.ALL, 5)
+
+        self.m_angleToleranceLabel = wx.StaticText(self, wx.ID_ANY, u"Angle Tolerance ±: ", wx.DefaultPosition, wx.DefaultSize, 0)
+        self.m_tolerance = wx.TextCtrl(self, wx.ID_ANY, u"3.0", wx.DefaultPosition, wx.DefaultSize, 0)
+        checkbox_sizer.Add(self.m_angleToleranceLabel, 0, wx.ALL | wx.ALIGN_CENTER_VERTICAL, 5)
+        checkbox_sizer.Add(self.m_tolerance, 0, wx.ALL, 5)
 
         bSizer.Add(checkbox_sizer, 0, wx.ALL, 12)
 
@@ -71,9 +73,9 @@ class gui(wx.Dialog):
         self.Centre(wx.BOTH)
 
     def GetValue(self):
-        return (self.m_dataField.GetValue(),
+        return (float(self.angle.GetValue()),
                 self.m_layerChoice.GetStringSelection(),
                 self.m_checkPads.GetValue(),
-                self.m_checkVias.GetValue())
+                float(self.m_tolerance.GetValue()))
 
     

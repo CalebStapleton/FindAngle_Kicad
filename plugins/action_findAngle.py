@@ -2,7 +2,6 @@ import pcbnew
 import math
 import os
 
-
 class FindAngle:
 
     def __init__(self):
@@ -21,7 +20,7 @@ class FindAngle:
         self.deprecation_file_path = os.path.join(self.plugin_folder, 'deprecation.null')
         self.version_file_path = os.path.join(self.plugin_folder, 'version.txt')
 
-    def find_angle(angleInput: int, layer: str, checkPads: bool, checkVias: bool):
+    def find_angle(angleInput: float, layer: str, checkPads: bool, angleTolerance: float):
         board = pcbnew.GetBoard()
         clear_layer(layer)
         points = {}
@@ -45,7 +44,6 @@ class FindAngle:
             
             angle = round(math.degrees(math.atan2(dy, dx)) % 180, 1)
 
-            angleInputint = int(float(angleInput))
             
             # Map angles meeting at specific coordinates
             for pt in (start, end):
@@ -60,7 +58,7 @@ class FindAngle:
                         diff = abs(angles[i] - angles[j])
                         
                         # Add margins to the target intersections to allow for slight deviations in the actual angles
-                        if angleInputint - 3 <= diff <= angleInputint + 3:
+                        if angleInput - angleTolerance <= diff <= angleInput + angleTolerance:
 
                             test_pt = pcbnew.VECTOR2I(int(pt[0]), int(pt[1]))                            
                                 
@@ -68,10 +66,6 @@ class FindAngle:
                             if (not checkPads):
                                 hit_pad = any(pad.HitTest(test_pt, 0) for pad in board.GetPads() if isinstance(pad, pcbnew.PAD))
                                 if hit_pad:
-                                    valid = False
-                            if (not checkVias):
-                                hit_via = any(via.HitTest(test_pt, 0) for via in board.GetTracks() if isinstance(via, pcbnew.PCB_VIA))
-                                if hit_via:
                                     valid = False
                                 
                             if valid:

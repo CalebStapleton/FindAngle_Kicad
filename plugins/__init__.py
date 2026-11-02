@@ -27,9 +27,9 @@ class AngleDetectorPlugin(pcbnew.ActionPlugin):
             angle = userInput[0]
             layer = userInput[1]
             checkPads = userInput[2]
-            checkVias = userInput[3]
-                
-            find_angle(angle, layer, checkPads, checkVias)
+            angleTolerance = userInput[3]
+
+            find_angle(angle, layer, checkPads, angleTolerance)
 
         elif result == wx.ID_CLEAR:
             userInput = list(dlg.GetValue())
