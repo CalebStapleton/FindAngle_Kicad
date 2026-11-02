@@ -15,8 +15,7 @@ class AngleDetectorPlugin(pcbnew.ActionPlugin):
         self.show_toolbar_button = True 
         
         # Absolute path calculation to find the icon file relative to this script
-        plugin_dir = os.path.dirname(os.path.dirname(__file__))
-        self.icon_file_name = os.path.join(plugin_dir, "resources", "icon.png")
+        self.icon_file_name = os.path.join(os.path.dirname(__file__), "icon.png")
 
     def Run(self):
 
