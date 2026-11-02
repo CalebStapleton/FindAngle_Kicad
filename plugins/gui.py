@@ -53,6 +53,10 @@ class gui(wx.Dialog):
         self.m_buttonCancel.SetDefault()
         button_sizer.Add(self.m_buttonCancel, 0, 0, 0)
 
+        self.m_buttonClear = wx.Button(self, wx.ID_CLEAR, u"Clear", wx.DefaultPosition, wx.DefaultSize, 0)
+        self.m_buttonClear.Bind(wx.EVT_BUTTON, lambda event: self.EndModal(wx.ID_CLEAR))
+        button_sizer.Add(self.m_buttonClear, 0, 0, 0)
+
         button_sizer.AddStretchSpacer(1)
 
         
@@ -67,6 +71,9 @@ class gui(wx.Dialog):
         self.Centre(wx.BOTH)
 
     def GetValue(self):
-        return self.m_dataField.GetValue(), self.m_layerChoice.GetStringSelection(), self.m_checkPads.GetValue(), self.m_checkVias.GetValue()
+        return (self.m_dataField.GetValue(),
+                self.m_layerChoice.GetStringSelection(),
+                self.m_checkPads.GetValue(),
+                self.m_checkVias.GetValue())
 
     

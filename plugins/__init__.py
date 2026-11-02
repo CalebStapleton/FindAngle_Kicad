@@ -1,7 +1,7 @@
 import os
 import pcbnew
 import wx
-from .action_findAngle import find_angle
+from .action_findAngle import find_angle, clear_layer
 from .gui import gui
 
 class AngleDetectorPlugin(pcbnew.ActionPlugin):
@@ -22,14 +22,20 @@ class AngleDetectorPlugin(pcbnew.ActionPlugin):
 
         dlg = gui(None)
 
-        if dlg.ShowModal() == wx.ID_OK:
+        result = dlg.ShowModal()
+        if result == wx.ID_OK:
             userInput = list(dlg.GetValue())
             angle = userInput[0]
             layer = userInput[1]
             checkPads = userInput[2]
             checkVias = userInput[3]
-
+                
             find_angle(angle, layer, checkPads, checkVias)
+
+        elif result == wx.ID_CLEAR:
+            userInput = list(dlg.GetValue())
+            layer = userInput[1]
+            clear_layer(layer)
 
         dlg.Destroy()
 

@@ -3,7 +3,7 @@ import math
 
 def find_angle(angleInput: int, layer: str, checkPads: bool, checkVias: bool):
     board = pcbnew.GetBoard()
-    clearUser1(layer)
+    clear_layer(layer)
     points = {}
 
     all_tracks = [t for t in board.GetTracks() if isinstance(t, pcbnew.PCB_TRACK)]
@@ -71,7 +71,7 @@ def place_marker(pt, layer: str):
     marker.SetLayer(getattr(pcbnew, layer))
     board.Add(marker)
 
-def clearUser1(layer: str):
+def clear_layer(layer: str):
     board = pcbnew.GetBoard()
     drawing_to_remove = [d for d in board.GetDrawings() if d.GetLayer() == getattr(pcbnew, layer)]
     for d in drawing_to_remove:
