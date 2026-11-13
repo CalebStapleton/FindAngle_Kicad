@@ -1,8 +1,8 @@
 {
-    "$schema": "https://go.kicad.org/pcm/schemas/v1",
+    "$schema": "https://go.kicad.org/pcm/schemas/v2",
     "name": "90-Degree Track Junction Detector",
     "description": "Find bends in traces with specified angle",
-    "description_full": "A plugin that scans your PCB for bends in traces in which the user can specify the angle, before marking them in the User1 Layer",
+    "description_full": "A plugin that scans your PCB for bends in traces in which the user can specify the angle, before marking them in the Specified User Layer",
     "identifier": "com.github.calebstapleton.findangle_kicad",
     "type": "plugin",
     "author": {
@@ -17,9 +17,15 @@
     },
     "versions": [
         {
-            "version": "1.0.0",
+            "version": "1.2.1",
             "status": "development",
-            "kicad_version": "10.0.0"
+            "kicad_version": "10.0",
+            "kicad_version_max": "10.1",
+            "platforms": [
+                "linux",
+                "macos",
+                "windows"
+            ]
         }
     ]
 }

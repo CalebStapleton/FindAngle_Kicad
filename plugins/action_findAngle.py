@@ -12,8 +12,7 @@ class FindAngle:
         self.name = "Find Angle"
         self.category = "Find Angle"
         self.description = "find angles between traces in the PCB"
-        self.icon_file_name = os.path.join(
-            os.path.dirname(__file__), 'icon.png')
+        self.icon_file_name = os.path.join(os.path.dirname(__file__), 'icon.png')
 
         # plugin paths
         self.plugin_folder = os.path.join(os.path.dirname(os.path.abspath(__file__)))
@@ -91,7 +90,7 @@ class FindAngle:
         for d in drawing_to_remove:
             board.Remove(d)
         pcbnew.Refresh()
-
+## class FindAngle
 
 find_angle = FindAngle.find_angle
 place_marker = FindAngle.place_marker
