@@ -19,7 +19,7 @@ class FindAngle:
         self.deprecation_file_path = os.path.join(self.plugin_folder, 'deprecation.null')
         self.version_file_path = os.path.join(self.plugin_folder, 'version.txt')
 
-    def find_angle(angleInput: float, layer: str, checkPads: bool, angleTolerance: float):
+    def find_angle(angleInput: float, layer: str, angleTolerance: float):
         board = pcbnew.GetBoard()
         clear_layer(layer)
         points = {}
@@ -62,11 +62,10 @@ class FindAngle:
                             test_pt = pcbnew.VECTOR2I(int(pt[0]), int(pt[1]))                            
                                 
                             valid = True
-                            if (not checkPads):
-                                hit_pad = any(pad.HitTest(test_pt, 0) for pad in board.GetPads() if isinstance(pad, pcbnew.PAD))
-                                if hit_pad:
+                            if (any(pad.HitTest(test_pt, 0) for pad in board.GetPads() if isinstance(pad, pcbnew.PAD))):
                                     valid = False
-                                
+                            elif (any(via.HitTest(test_pt, 0) for via in board.GetTracks() if isinstance(via, pcbnew.PCB_VIA))):
+                                valid = False
                             if valid:
                                 place_marker(pt, layer)
         
